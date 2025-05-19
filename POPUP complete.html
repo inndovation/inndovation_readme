@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Book Slider</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      background-color: #222;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .book-slider-container {
+      background-color: #a78bfa;
+      width: 800px;
+      height: 650px;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      padding: 20px;
+      color: white;
+    }
+
+    .timeline-wrapper {
+      width: 100%;
+      height: 100px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .timeline-wrapper img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    .book-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: calc(100% - 120px);
+      position: relative;
+    }
+
+    .left-panel {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .left-panel h2 {
+      font-size: 16px;
+      background-color: #6d28d9;
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .left-panel h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .book-age {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .book-desc {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .right-panel {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+
+    .right-panel img {
+      width: 200px;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.3);
+      color: white;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .arrow.left {
+      left: 0;
+    }
+
+    .arrow.right {
+      right: 0;
+    }
+
+    .pagination-dots {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      width: 100%;
+    }
+
+    .pagination-dots button {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: none;
+      background-color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .pagination-dots button.active {
+      background-color: #ffffff;
+    }
+
+    @media (max-width: 767px) {
+      .book-slider-container {
+        width: 300px;
+        height: 500px;
+        padding: 15px;
+      }
+
+      .left-panel h1 {
+        font-size: 28px;
+      }
+
+      .left-panel h2 {
+        font-size: 12px;
+      }
+
+      .book-desc {
+        font-size: 12px;
+      }
+
+      .right-panel img {
+        width: 140px;
+      }
+
+      .arrow {
+        font-size: 20px;
+        width: 28px;
+        height: 28px;
+      }
+
+      .pagination-dots {
+        bottom: -20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="book-slider-container">
+    <div class="timeline-wrapper">
+      <img id="timeline-img" src="https://placehold.co/800x100/000000/ffffff?text=Wavy+1" alt="Timeline" />
+    </div>
+
+    <div class="book-content">
+      <div class="left-panel">
+        <h2>READING ROADMAP & BOOKS RECOMMENDATION</h2>
+        <h1 id="book-title">Early Learners</h1>
+        <p class="book-age" id="book-age">Age 0 - 3</p>
+        <p class="book-desc" id="book-desc">
+          Reason-to-Read: Fun and engaging stories for young readers.
+        </p>
+      </div>
+
+      <div class="right-panel">
+        <button class="arrow left" onclick="changeBook(-1)">&#10094;</button>
+        <img id="book-img" src="https://d5i0fhmkm8zzl.cloudfront.net/2024-11/badguys_book.png" alt="Book" />
+        <button class="arrow right" onclick="changeBook(1)">&#10095;</button>
+
+        <div class="pagination-dots" id="pagination-dots"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const books = [
+      {
+        title: "Early Learners",
+        age: "Age 0 - 3",
+        desc: "Reason-to-Read: Fun and engaging stories for young readers.",
+        img: "https://d5i0fhmkm8zzl.cloudfront.net/2024-11/badguys_book.png",
+        timeline: "https://placehold.co/800x100/000000/ffffff?text=Wavy+1"
+      },
+      {
+        title: "Growing Minds",
+        age: "Age 4 - 6",
+        desc: "Reason-to-Read: Build vocabulary and curiosity with action-packed adventures.",
+        img: "https://d5i0fhmkm8zzl.cloudfront.net/2024-11/Dogman1_book.png",
+        timeline: "https://placehold.co/800x100/ff4444/ffffff?text=Wavy+2"
+      },
+      {
+        title: "Curious Explorers",
+        age: "Age 7 - 10",
+        desc: "Reason-to-Read: Explore complex emotions and develop critical thinking.",
+        img: "https://d5i0fhmkm8zzl.cloudfront.net/2024-11/Sunrise_book.png",
+        timeline: "https://placehold.co/800x100/4444ff/ffffff?text=Wavy+3"
+      }
+    ];
+
+    let currentIndex = 0;
+
+    function updateBook() {
+      const book = books[currentIndex];
+      document.getElementById("book-title").innerText = book.title;
+      document.getElementById("book-age").innerText = book.age;
+      document.getElementById("book-desc").innerText = book.desc;
+      document.getElementById("book-img").src = book.img;
+      document.getElementById("timeline-img").src = book.timeline;
+
+      // Update active dot
+      const dots = document.querySelectorAll('.pagination-dots button');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    function changeBook(direction) {
+      currentIndex = (currentIndex + direction + books.length) % books.length;
+      updateBook();
+    }
+
+    function goToBook(index) {
+      currentIndex = index;
+      updateBook();
+    }
+
+    function createPagination() {
+      const container = document.getElementById('pagination-dots');
+      books.forEach((_, index) => {
+        const btn = document.createElement('button');
+        btn.onclick = () => goToBook(index);
+        if (index === currentIndex) btn.classList.add('active');
+        container.appendChild(btn);
+      });
+    }
+
+    // Initialize
+    createPagination();
+    updateBook();
+  </script>
+</body>
+</html>
